@@ -1,0 +1,169 @@
+@import 'tailwind.css';
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './element-ui.scss';
+@import './sidebar.scss';
+
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: 微软雅黑, Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+}
+
+label {
+  font-weight: 700;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+
+// main-container global css
+.app-container {
+  padding: 10px 20px 0 20px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.ml-10 {
+  margin-left: 10px;
+}
+
+.ml-20 {
+  margin-left: 20px;
+}
+
+.mr-10 {
+  margin-right: 10px;
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.full-width {
+  width: 100% !important;
+}
+
+.font-12 {
+  font-size: 12px;
+}
+
+.font-14 {
+  font-size: 14px;
+}
+
+.font-16 {
+  font-size: 16px;
+}
+
+.append-btn {
+  color: #FFF !important;
+  background-color: #409EFF !important;
+  border-color: #409EFF !important;
+}
+
+::-webkit-scrollbar {
+  width: 0.3rem;
+  height: 0.6rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $scrollbarBgColor;
+  border-radius: 1rem;
+  box-shadow: inset 2px 2px 2px hsla(0, 0%, 100%, .25)
+  inset -2px -2px 2px rgba(0, 0, 0, .25);
+}
+// ::-webkit-scrollbar-track {
+//background: linear-gradient(90deg, $scrollbarBgColor, $scrollbarBgColor 1px, #1110, #111);
+// }
+
+// 修改tinymce样式
+.tox.tox-tinymce-inline, .tox.tox-tinymce-aux {
+  z-index: 3200;
+}
+
+// loading 样式
+.loading-style {
+  background: linear-gradient(to bottom, #409eff, #ffffff);
+  .el-loading-spinner {
+    flex-direction: column;
+  }
+
+  .el-loading-spinner .path {
+    stroke: #ffffff;
+  }.el-loading-text {
+    color: #ffffff;
+  }
+}
+.el-dialog__body {
+  padding: 0 20px 30px 20px;
+}
+// 解决表头列和内容列不对齐问题
+.el-table th.gutter {
+  display: table-cell!important;
+}
+
+.tabs-radio {
+  margin: 10px 0;
+}
