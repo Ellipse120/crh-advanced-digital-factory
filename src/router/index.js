@@ -427,9 +427,24 @@ export const checkPermissionRoutes = [
       },
       {
         path: 'x6-demo',
-        name: 'X6',
-        component: () => lazyLoadView(import('@/views/x6/index')),
-        meta: { title: 'antV X6 Demo' }
+        component: {
+          render: (h) => h('router-view')
+        },
+        meta: { title: 'antV X6 Demo' },
+        children: [
+          {
+            path: '',
+            name: 'X6',
+            component: () => lazyLoadView(import('@/views/x6/index')),
+            meta: { title: 'Index' }
+          },
+          {
+            path: 'flow',
+            name: 'FlowChart',
+            component: () => lazyLoadView(import('@/views/x6/flow')),
+            meta: { title: 'Flow Chart' }
+          }
+        ]
       }
     ]
   },
