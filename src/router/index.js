@@ -61,7 +61,7 @@ function lazyLoadView (asyncView) {
 export const constantRoutes = [
   {
     path: '/login',
-    component: () => lazyLoadView(import('@/views/login/index1')),
+    component: () => lazyLoadView(import('@/views/login/index')),
     hidden: true
   },
   {
