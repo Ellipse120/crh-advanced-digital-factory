@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import VueCompositionAPI from '@vue/composition-api'
 
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
@@ -22,7 +21,6 @@ import { utilsMixin } from '@/mixins'
 // }
 makeServer()
 
-Vue.use(VueCompositionAPI)
 Vue.mixin(utilsMixin)
 Vue.use(VCalendar)
 Vue.use(ElementUI, { size: 'mini', zIndex: 3000 })

@@ -2,7 +2,6 @@
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
 const zlib = require('zlib')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 function resolve (dir) {
   return path.join(__dirname, dir)
@@ -39,18 +38,6 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
-    },
-    proxy: {
-      '^/mock-api': {
-        target: 'http://10.128.3.181:8084',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/mock-api/token': '/token',
-          '^/mock-api/myservice/547acc0ee1f611eabcc0005056ac2d76': '/myservice/547acc0ee1f611eabcc0005056ac2d76',
-          '^/mock-api/session': '/session',
-          '^/mock-api/myservice/security-server': '/myservice/security-server'
-        }
-      }
     }
   },
   css: { loaderOptions: { less: { javascriptEnabled: true }}},
@@ -63,9 +50,17 @@ module.exports = {
         '@': resolve('src')
       }
     },
+    module: {
+      rules: [
+        {
+          test: /\.mjs$/,
+          include: /node_modules/,
+          type: 'javascript/auto'
+        }
+      ]
+    },
     plugins: isProd ? [
-      new webpack.BannerPlugin(`${copyright} | version ${version}`),
-      new BundleAnalyzerPlugin()
+      new webpack.BannerPlugin(`${copyright} | version ${version}`)
     ] : []
   },
   chainWebpack (config) {
