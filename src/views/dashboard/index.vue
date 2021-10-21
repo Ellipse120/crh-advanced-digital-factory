@@ -1,43 +1,37 @@
 <template>
-  <div class="idx-search">
-    <search-tool @searchData="getSearchData" />
+  <div class="m-4">
+    <pre>
+      x: {{ x }}
+      y: {{ y }}
+    </pre>
+    <el-row :gutter="8">
+      <el-col :span="24">
+        <el-input v-model="tt" clearable />
+      </el-col>
+      <el-col :span="24">
+        <pre class="bg-red-500 text-white p-4 rounded">{{ tt }}</pre>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-import SearchTool from './search-tool'
-import isEmpty from 'lodash/isEmpty'
+
+import { useMouse } from '@vueuse/core'
+import { onMounted, ref } from '@vue/composition-api'
 
 export default {
   name: 'Dashboard',
-  components: { SearchTool },
-  data () {
-    return {
+  setup () {
+    // tracks mouse position
+    const { x, y } = useMouse()
+    const tt = ref(null)
 
-    }
-  },
-  computed: {
-    isHomePage () {
-      return this.$route.path.includes('dashboard')
-    }
-  },
-  methods: {
-    getSearchData (query) {
-      if (!isEmpty(query)) {
-        this.$router.push({ name: 'SearchList', query })
-      }
-    }
+    onMounted(() => {
+      console.log('MOUNTED')
+    })
+    return { x, y, tt }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-.idx-search{
-  width: 1000px;
-  height: 70px;
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-</style>

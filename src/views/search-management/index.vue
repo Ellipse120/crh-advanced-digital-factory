@@ -85,15 +85,13 @@ import { downFileStream } from '@/utils'
 import ElSelectWrapper from '@/components/ElSelectWrapper'
 import ElButtonWrapper from '@/components/ElButtonWrapper'
 import ElTableWrapper from '@/components/ElTableWrapper'
-import SearchTool from '@/views/dashboard/search-tool'
 
 export default {
   name: 'FileManagement',
   components: {
     ElSelectWrapper,
     ElButtonWrapper,
-    ElTableWrapper,
-    SearchTool
+    ElTableWrapper
   },
   data () {
     return {
