@@ -8,9 +8,8 @@
     </details>
 
     <div id="container" class="flex border-2 border-red-300">
-      <div id="stencil" class="w-1/4 h-screen relative" />
-      <div id="graph-container" class="w-2/4 h-screen" />
-      <div id="minimap" class="w-1/4" />
+      <div id="stencil" class="w-1/5 h-screen relative" />
+      <div id="graph-container" class="w-4/5 h-screen" />
     </div>
   </div>
 </template>
@@ -32,6 +31,7 @@ export default {
     }
   },
   mounted () {
+    // <!--region Graph-->
     graph = new Graph({
       container: document.getElementById('graph-container'),
       grid: true,
@@ -45,7 +45,7 @@ export default {
       connecting: {
         router: 'manhattan',
         connector: {
-          name: 'rounded',
+          name: 'jumpover',
           args: {
             radius: 8
           }
@@ -62,6 +62,7 @@ export default {
               line: {
                 stroke: '#A2B1C3',
                 strokeWidth: 2,
+                sourceMarker: null,
                 targetMarker: {
                   name: 'block',
                   width: 12,
@@ -97,22 +98,17 @@ export default {
       snapline: true,
       keyboard: true,
       clipboard: true,
-      scroller: {
-        enable: true
-      },
-      minimap: {
-        enable: true,
-        container: document.getElementById('minimap')
-      }
+      history: true,
+      scroller: true
     })
-    // #endregion
+    // <!--endregion-->
 
     // #region 初始化 stencil
     const stencil = new Addon.Stencil({
       title: '流程图',
       target: graph,
       stencilGraphWidth: 200,
-      stencilGraphHeight: 180,
+      stencilGraphHeight: 300,
       collapsable: true,
       groups: [
         {
@@ -225,6 +221,41 @@ export default {
       const ports = container.querySelectorAll('.x6-port-body')
       showPorts(ports, false)
     })
+
+    graph.on('cell:dblclick', ({ cell, e }) => {
+      cell.addTools({
+        name: cell.isEdge() ? 'edge-editor' : 'node-editor',
+        args: {
+          event: e
+        }
+      })
+    })
+
+    graph.on('edge:mouseenter', ({ cell }) => {
+      cell.addTools(
+        [
+          { name: 'source-arrowhead' },
+          {
+            name: 'target-arrowhead',
+            args: {
+              attrs: {
+                fill: 'red'
+              }
+            }
+          },
+          { name: 'vertices' },
+          {
+            name: 'button-remove',
+            args: { distance: -40 }
+          }
+        ]
+      )
+    })
+
+    graph.on('edge:mouseleave', ({ cell }) => {
+      cell.removeTools()
+    })
+
     // #endregion
 
     // #region 初始化图形
@@ -321,7 +352,11 @@ export default {
           },
           text: {
             fontSize: 12,
-            color: '#262626'
+            color: '#262626',
+            textWrap: {
+              ellipsis: true,
+              width: -10 // 文本换行
+            }
           }
         },
         ports: { ...ports }
@@ -428,6 +463,24 @@ export default {
       true
     )
 
+    Graph.registerEdge(
+      'plain-line',
+      {
+        zIndex: -1,
+        attrs: {
+          line: {
+            fill: 'none',
+            strokeLinejoin: 'round',
+            strokeWidth: '2',
+            stroke: 'green',
+            sourceMarker: null,
+            targetMarker: null
+          }
+        }
+      },
+      true
+    )
+
     const r1 = graph.createNode({
       shape: 'custom-rect',
       label: '开始',
@@ -474,7 +527,23 @@ export default {
       shape: 'custom-circle',
       label: '连接'
     })
-    stencil.load([r1, r2, r3, r4, r5, r6], 'group1')
+
+    const r7 = graph.createNode({
+      shape: 'polyline',
+      x: 320,
+      y: 180,
+      width: 80,
+      height: 80,
+      attrs: {
+        body: {
+          fill: 'none',
+          stroke: '#ffa940',
+          refPoints: '0,40 40,40 40,80 80,80 80,120 120,120 120,160'
+        }
+      }
+    })
+
+    stencil.load([r1, r2, r3, r4, r5, r6, r7], 'group1')
 
     const m1 = graph.createNode({
       shape: 'custom-image',
