@@ -11,6 +11,12 @@
       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum cupiditate dolor dolores eligendi in, laborum pariatur quae repellat totam. Dolores error, esse illo in labore maiores obcaecati odit reprehenderit tempora
     </div>
 
+    <div class="my-2">
+      <el-button type="success" @click="doReplay">Re Play</el-button>
+      <el-button type="warning" @click="doPause">Pause</el-button>
+      <el-button type="primary" @click="doResume">Resume</el-button>
+      <el-button type="danger" @click="doReverse">Reverse</el-button>
+    </div>
     <div id="demo" ref="machineGunRef" class="bg-black m-auto overflow-hidden relative h-96" />
 
   </div>
@@ -86,11 +92,31 @@ export default {
       machineGun()
     })
 
+    const doReplay = () => {
+      tl.restart()
+    }
+
+    const doPause = () => {
+      tl.pause()
+    }
+
+    const doResume = () => {
+      tl.resume()
+    }
+
+    const doReverse = () => {
+      tl.reverse()
+    }
+
     return {
       x,
       y,
       wordsRef,
-      machineGunRef
+      machineGunRef,
+      doReplay,
+      doPause,
+      doResume,
+      doReverse
     }
   }
 }
