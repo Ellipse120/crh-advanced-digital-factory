@@ -5,7 +5,7 @@ const purgeOptions = process.env.NODE_ENV === 'production'
   ] : []
 
 module.exports = {
-  // mode: 'jit',
+  mode: 'jit',
   purge: purgeOptions,
   darkMode: false, // or 'media' or 'class'
   theme: {
