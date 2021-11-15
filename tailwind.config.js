@@ -1,12 +1,9 @@
-const purgeOptions = process.env.NODE_ENV === 'production'
-  ? [
-    './public/**/*.html',
-    './src/**/*.{js,jsx,ts,tsx,vue}'
-  ] : []
-
 module.exports = {
   mode: 'jit',
-  purge: purgeOptions,
+  purge: [
+    './public/**/*.html',
+    './src/**/*.{js,jsx,ts,tsx,vue}'
+  ],
   darkMode: false, // or 'media' or 'class'
   theme: {
     backgroundColor: theme => ({
