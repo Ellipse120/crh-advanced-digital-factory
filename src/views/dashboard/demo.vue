@@ -32,10 +32,11 @@ gsap.registerPlugin(TextPlugin)
 
 export default {
   name: 'Demo',
-  setup () {
+  setup (props, context) {
     const { x, y } = useMouse()
     const wordsRef = ref(null)
     const machineGunRef = ref(null)
+    const rootInstance = context.root
 
     const _sentenceEndExp = /(\.|\?|!)$/g
     const tl = gsap.timeline({
@@ -90,6 +91,7 @@ export default {
 
     onMounted(() => {
       machineGun()
+      rootInstance.$message.success('Yeap')
     })
 
     const doReplay = () => {

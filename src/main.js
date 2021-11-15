@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import VueCompositionAPI, { createApp } from '@vue/composition-api'
 
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
@@ -10,7 +11,6 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
-import VCalendar from 'v-calendar'
 import { makeServer } from '@/server'
 import '@/icons' // icon
 import '@/permission' // permission control
@@ -21,15 +21,14 @@ import { utilsMixin } from '@/mixins'
 // }
 makeServer()
 
-Vue.mixin(utilsMixin)
-Vue.use(VCalendar)
-Vue.use(ElementUI, { size: 'mini', zIndex: 3000 })
+Vue.use(VueCompositionAPI)
 
-Vue.config.productionTip = false
-
-new Vue({
-  el: '#app',
+const app = createApp({
   router,
   store,
   render: h => h(App)
 })
+app.config.productionTip = false
+app.mixin(utilsMixin)
+app.use(ElementUI, { size: 'mini', zIndex: 3000 })
+app.mount('#app')
