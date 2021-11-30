@@ -1,6 +1,6 @@
 import { checkPermissionRoutes, constantRoutes } from '@/router'
-import { getAllOrganizations } from '@/api/common'
-import { transformTree } from '@/utils/index'
+// import { getAllOrganizations } from '@/api/common'
+// import { transformTree } from '@/utils/index'
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -66,23 +66,23 @@ const actions = {
     })
   },
   getAllOrganizations ({ commit }) {
-    getAllOrganizations().then(({ data }) => {
-      const newData = data.map(i => ({
-        id: i.key,
-        parent: i.ext.parentCode,
-        value: i.value,
-        organType: i.ext.organType,
-        ext: i.ext
-      }))
-      const UNIT = data.filter(i => i.ext.organType === 'UNIT')
-      const DEPT = data.filter(i => i.ext.organType === 'DEPT')
-      const obj = {
-        treeData: transformTree(newData),
-        UNIT,
-        DEPT
-      }
-      commit('setAllOrganizations', obj)
-    })
+    // getAllOrganizations().then(({ data }) => {
+    //   const newData = data.map(i => ({
+    //     id: i.key,
+    //     parent: i.ext.parentCode,
+    //     value: i.value,
+    //     organType: i.ext.organType,
+    //     ext: i.ext
+    //   }))
+    //   const UNIT = data.filter(i => i.ext.organType === 'UNIT')
+    //   const DEPT = data.filter(i => i.ext.organType === 'DEPT')
+    //   const obj = {
+    //     treeData: transformTree(newData),
+    //     UNIT,
+    //     DEPT
+    //   }
+    //   commit('setAllOrganizations', obj)
+    // })
   }
 
 }
