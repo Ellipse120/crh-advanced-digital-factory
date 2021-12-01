@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import { ref } from '@vue/composition-api'
 // import FormBuilder from '@/components/FormBuilder'
 import { useForm } from '@/components/FormBuilder/form'
@@ -49,18 +50,25 @@ export default {
       {
         label: '名字',
         name: 'name',
-        component: 'el-input-wrapper',
+        component: Vue.component('ElInputWrapper2', {
+          render (h) {
+            return h('el-input', {
+              attrs: this.$attrs,
+              on: this.$listeners
+            }, [
+              h('template', {
+                slot: 'append'
+              }, [h('div', {
+                class: 'text-red-500 bg-blue-300'
+              }, '圆')])
+            ])
+          }
+        }),
         props: {
-          placeholder: '请输入名字',
+          placeholder: '请输入名字11',
           clearable: true,
           'suffix-icon': 'el-icon-date'
-        },
-        slotName: '',
-        slotTemplate: `
-        <template #append>
-            <h1>Here might be a page title</h1>
-         </template>
-        `
+        }
       },
       {
         label: '性别',
