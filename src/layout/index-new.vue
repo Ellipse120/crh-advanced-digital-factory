@@ -1,6 +1,5 @@
 <template>
   <div>
-    <organization-data />
     <div>
       <navbar-new />
     </div>
@@ -14,7 +13,6 @@
 
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
-import OrganizationData from '@/components/OrganizationData'
 
 import { AppMain, NavbarNew } from './components'
 
@@ -23,8 +21,7 @@ export default {
   components: {
     AppMain,
     NavbarNew,
-    Breadcrumb,
-    OrganizationData
+    Breadcrumb
   }
 }
 </script>

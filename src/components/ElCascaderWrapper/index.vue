@@ -14,7 +14,7 @@
  * @description **下拉框组件**
  */
 export default {
-  name: 'ElSelectWrapper',
+  name: 'ElCascaderWrapper',
   props: {
     value: {
       type: [Array, String, Number],
@@ -31,7 +31,6 @@ export default {
   watch: {
     value: {
       handler: function (val) {
-        console.log(val)
         this.val = val
       },
       immediate: true
