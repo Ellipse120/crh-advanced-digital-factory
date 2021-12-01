@@ -228,9 +228,6 @@ $bgColor: #409eff;
   display: flex;
   align-content: center;
   justify-content: center;
-  //background: $bgColor;
-  //background: $bgColor url("../../assets/login-bg.png") no-repeat left bottom;
-  //background-size: cover;
 
   .login-form {
     padding: 4rem;

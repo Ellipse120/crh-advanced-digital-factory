@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '动车组高级修数字化工厂管理系统',
+  title: 'xxx管理系统',
 
   subTitle: 'crh-advanced-digital-factory',
 
