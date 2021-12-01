@@ -3,8 +3,7 @@
     <div class="flex h-56px bg-header items-center justify-between">
       <router-link to="/">
         <div class="flex items-center text-white">
-          <div class="logo h-56px w-56px bg-cover bg-no-repeat" />
-          <h1 class="tracking-wide text-2xl">{{ title }}</h1>
+          <h1 class="tracking-wide p-4 text-2xl">{{ title }}</h1>
         </div>
       </router-link>
       <div class="text-white">
@@ -107,9 +106,3 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-
-  .logo {
-    background-image: url('~@/assets/images/brand/railway-icon.png');
-  }
-</style>
