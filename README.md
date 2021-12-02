@@ -1,6 +1,6 @@
 # 动车组高级修数字化工厂管理系统
 
-> Lerna & Husky & CommitLint & Vue.js & Element UI & TailWindCSS & AntV X6 & Axios & CryptoJS & [date-fns](http://10.128.198.185:8080/date-fns-doc/) & Tinymce & VirtualScroll & Iconfont & Permission Control & Lint
+> Lerna & Husky & CommitLint & Vue.js & Element UI & WindiCSS & AntV X6 & Axios & CryptoJS & [date-fns](http://10.128.198.185:8080/date-fns-doc/) & Tinymce & VirtualScroll & Iconfont & Permission Control & Lint
 
 **Live demo:** [http://10.128.198.185:8080/train-technical-regulations-management-staging/](http://10.128.198.185:8080/train-technical-regulations-management-staging/)
 

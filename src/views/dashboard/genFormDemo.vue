@@ -30,6 +30,7 @@ import ElCheckboxGroupWrapper from '@/components/ElCheckboxGroupWrapper'
 import ElRadioGroupWrapper from '@/components/ElRadioGroupWrapper'
 import ElInputWrapper from '@/components/ElInputWrapper'
 
+// eslint-disable-next-line vue/one-component-per-file
 export default {
   name: 'GenFormDemo',
   components: {
@@ -50,6 +51,7 @@ export default {
       {
         label: '名字',
         name: 'name',
+        // eslint-disable-next-line vue/one-component-per-file
         component: Vue.component('ElInputWrapper2', {
           render (h) {
             return h('el-input', {

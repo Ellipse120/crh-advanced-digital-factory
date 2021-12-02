@@ -15,6 +15,7 @@ import { makeServer } from '@/server'
 import '@/icons' // icon
 import '@/permission' // permission control
 import { utilsMixin } from '@/mixins'
+import 'windi.css'
 
 // if (process.env.NODE_ENV === 'development') {
 //   makeServer()
