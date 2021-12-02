@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
-const zlib = require('zlib')
+// const zlib = require('zlib')
 
 function resolve (dir) {
   return path.join(__dirname, dir)
@@ -10,11 +10,11 @@ function resolve (dir) {
 const name = defaultSettings.title // page title
 
 const port = process.env.port || process.env.npm_config_port || 8000 // dev port
-const version = require('./package.json').version
-const copyright = require('./package.json').copyright
-const webpack = require('webpack')
+// const version = require('./package.json').version
+// const copyright = require('./package.json').copyright
+// const webpack = require('webpack')
 
-const isProd = process.env.NODE_ENV === 'production'
+// const isProd = process.env.NODE_ENV === 'production'
 const isDev = process.env.NODE_ENV === 'development'
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
@@ -57,10 +57,10 @@ module.exports = {
           type: 'javascript/auto'
         }
       ]
-    },
-    plugins: isProd ? [
-      new webpack.BannerPlugin(`${copyright} | version ${version}`)
-    ] : []
+    }
+    // plugins: isProd ? [
+    //   new webpack.BannerPlugin(`${copyright} | version ${version}`)
+    // ] : []
   },
   chainWebpack (config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload
@@ -154,26 +154,5 @@ module.exports = {
           config.optimization.runtimeChunk('single')
         }
       )
-  },
-  pluginOptions: {
-    compression: {
-      brotli: {
-        filename: '[file].br[query]',
-        algorithm: 'brotliCompress',
-        include: /\.(js|css|html|svg|json)(\?.*)?$/i,
-        compressionOptions: {
-          params: {
-            [zlib.constants.BROTLI_PARAM_QUALITY]: 11
-          }
-        },
-        minRatio: 0.8
-      },
-      gzip: {
-        filename: '[file].gz[query]',
-        algorithm: 'gzip',
-        include: /\.(js|css|html|svg|json)(\?.*)?$/i,
-        minRatio: 0.8
-      }
-    }
   }
 }

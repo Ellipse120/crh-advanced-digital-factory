@@ -1,10 +1,4 @@
-module.exports = {
-  mode: 'jit',
-  purge: [
-    './public/**/*.html',
-    './src/**/*.{js,jsx,ts,tsx,vue}'
-  ],
-  darkMode: false, // or 'media' or 'class'
+export default {
   theme: {
     backgroundColor: theme => ({
       ...theme('colors'),
@@ -19,9 +13,5 @@ module.exports = {
         '100px': '100px'
       }
     }
-  },
-  variants: {
-    extend: {}
-  },
-  plugins: []
+  }
 }
