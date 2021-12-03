@@ -14,6 +14,20 @@
       </el-row>
 
     </el-form>
+
+    <pre>{{ testData }}</pre>
+    <el-table-wrapper :data="testData" :stripe="false">
+      <el-table-column align="center" label="A" property="a">
+        <template slot-scope="scope">
+          <inline-editor :val-data="scope.row.a" @update:valData="(v) => test(v, scope)" />
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="B" property="b">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.b" />
+        </template>
+      </el-table-column>
+    </el-table-wrapper>
   </div>
 </template>
 
@@ -29,11 +43,15 @@ import ElDatePickerWrapper from '@/components/ElDatePickerWrapper'
 import ElCheckboxGroupWrapper from '@/components/ElCheckboxGroupWrapper'
 import ElRadioGroupWrapper from '@/components/ElRadioGroupWrapper'
 import ElInputWrapper from '@/components/ElInputWrapper'
+import ElTableWrapper from '@/components/ElTableWrapper'
+import InlineEditor from '@/components/InlineEditor'
 
 // eslint-disable-next-line vue/one-component-per-file
 export default {
   name: 'GenFormDemo',
   components: {
+    InlineEditor,
+    ElTableWrapper,
     FormItem,
     ElSelectWrapper,
     ElDatePickerWrapper,
@@ -249,9 +267,28 @@ export default {
       ]
     })
 
+    const testData = ref([
+      {
+        id: 1,
+        a: 'test1',
+        b: 'test1b'
+      },
+      {
+        id: 2,
+        a: 'test2',
+        b: 'test2b'
+      }
+    ])
+
+    const test = (v, scope) => {
+      console.log(v, scope)
+      scope.row.a = v
+    }
+
     return {
       model,
       forms,
+      testData,
 
       form,
       formValues,
@@ -259,8 +296,18 @@ export default {
       formShares,
       metadata,
       setInitialFormValues,
-      updateFormValues
+      updateFormValues,
+      test
     }
   }
 }
 </script>
+
+<style>
+.el-table__row .el-input .el-input__inner{
+  border-style:none;
+}
+.hover-row .el-input .el-input__inner{
+  border-style:solid;
+}
+</style>

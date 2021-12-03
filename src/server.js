@@ -110,6 +110,7 @@ export function makeServer ({ environment = 'development' } = {}) {
 
   server.passthrough(`${process.env.VUE_APP_LOCAL_BASE_API}/**`)
   server.passthrough(`${process.env.VUE_APP_REMOTE_BASE_API}/**`)
+  server.logging = false
 
   window.server = server
   return server
