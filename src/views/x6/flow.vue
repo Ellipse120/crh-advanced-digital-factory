@@ -15,10 +15,15 @@
 </template>
 
 <script>
-import { Graph, Shape, Addon } from '@antv/x6'
+import { Addon, Graph, Shape, Color, Dom } from '@antv/x6'
 import '@antv/x6-vue-shape'
-import initData from './initData.json'
+// import { DagreLayout } from '@antv/layout'
+import dagre from 'dagre'
+import last from 'lodash/last'
+
+// import initData from './initData.json'
 import ElButtonWrapper from '@/components/ElButtonWrapper'
+import FlowCell from '@/views/x6/flow-cell'
 
 let graph
 
@@ -31,7 +36,6 @@ export default {
     }
   },
   mounted () {
-    // <!--region Graph-->
     graph = new Graph({
       container: document.getElementById('graph-container'),
       grid: true,
@@ -43,36 +47,35 @@ export default {
         maxScale: 3
       },
       connecting: {
-        router: 'manhattan',
-        connector: {
-          name: 'jumpover',
-          args: {
-            radius: 8
-          }
-        },
-        anchor: 'center',
-        connectionPoint: 'anchor',
+        // router: 'manhattan',
+        // connector: {
+        // name: 'jumpover',
+        // args: {
+        //   radius: 8
+        // }
+        // },
+        // connectionPoint: 'anchor',
         allowBlank: false,
-        snap: {
-          radius: 20
-        },
-        createEdge () {
-          return new Shape.Edge({
-            attrs: {
-              line: {
-                stroke: '#A2B1C3',
-                strokeWidth: 2,
-                sourceMarker: null,
-                targetMarker: {
-                  name: 'block',
-                  width: 12,
-                  height: 8
-                }
-              }
-            },
-            zIndex: 0
-          })
-        },
+        // snap: {
+        //   radius: 20
+        // },
+        // createEdge () {
+        //   return new Shape.Edge({
+        //     attrs: {
+        //       line: {
+        //         stroke: '#A2B1C3',
+        //         strokeWidth: 2,
+        //         sourceMarker: null,
+        //         targetMarker: {
+        //           name: 'block',
+        //           width: 12,
+        //           height: 8
+        //         }
+        //       }
+        //     },
+        //     zIndex: 0
+        //   })
+        // },
         validateConnection ({ targetMagnet }) {
           return !!targetMagnet
         }
@@ -463,6 +466,75 @@ export default {
       true
     )
 
+    Graph.registerVueComponent(
+      'FlowCell',
+      {
+        template: `<flow-cell :name="name" @add:cell="handleAdd" />`,
+        components: {
+          FlowCell
+        },
+        data () {
+          return {
+            name: null
+          }
+        },
+        methods: {
+          handleAdd (node, key, keyPath) {
+            console.log(keyPath)
+            this.name = keyPath[0]
+            const bg = Color.randomHex()
+            const member = createNode(
+              `部件${last(keyPath)}`,
+              last(keyPath),
+              Math.random() < 0.5 ? male : female,
+              bg,
+              Color.invert(bg, true),
+              'custom-vue',
+              {
+                name: last(keyPath)
+              }
+            )
+            graph.addCell([member, createEdge(node, member)])
+            layout()
+          }
+        }
+      },
+      true
+    )
+
+    Graph.registerNode(
+      'custom-vue',
+      {
+        inherit: 'vue-shape',
+        component: 'FlowCell',
+        width: 260,
+        height: 88,
+        attrs: {
+          body: {
+            strokeWidth: 1,
+            stroke: '#26C160',
+            fill: 'white'
+          },
+          image: {
+            width: 26,
+            height: 26,
+            refX: 13,
+            refY: 16
+          },
+          label: {
+            refX: 3,
+            refY: 2,
+            textAnchor: 'left',
+            textVerticalAnchor: 'top',
+            fontSize: 12,
+            fill: '#fff'
+          }
+        },
+        ports: { ...ports }
+      },
+      true
+    )
+
     Graph.registerEdge(
       'plain-line',
       {
@@ -480,6 +552,362 @@ export default {
       },
       true
     )
+
+    // 自定义节点
+    Graph.registerNode(
+      'org-node',
+      {
+        // ports: { ...ports },
+        width: 260,
+        height: 88,
+        markup: [
+          {
+            tagName: 'rect',
+            attrs: {
+              class: 'card'
+            }
+          },
+          {
+            tagName: 'image',
+            attrs: {
+              class: 'image'
+            }
+          },
+          {
+            tagName: 'text',
+            attrs: {
+              class: 'rank'
+            }
+          },
+          {
+            tagName: 'text',
+            attrs: {
+              class: 'name'
+            }
+          },
+          {
+            tagName: 'g',
+            attrs: {
+              class: 'btn add'
+            },
+            children: [
+              {
+                tagName: 'circle',
+                attrs: {
+                  class: 'add'
+                }
+              },
+              {
+                tagName: 'text',
+                attrs: {
+                  class: 'add'
+                }
+              }
+            ]
+          },
+          {
+            tagName: 'g',
+            attrs: {
+              class: 'btn del'
+            },
+            children: [
+              {
+                tagName: 'circle',
+                attrs: {
+                  class: 'del'
+                }
+              },
+              {
+                tagName: 'text',
+                attrs: {
+                  class: 'del'
+                }
+              }
+            ]
+          }
+        ],
+        attrs: {
+          '.card': {
+            rx: 10,
+            ry: 10,
+            refWidth: '100%',
+            refHeight: '100%',
+            fill: '#FFF',
+            stroke: '#000',
+            strokeWidth: 0,
+            pointerEvents: 'visiblePainted'
+          },
+          '.image': {
+            x: 16,
+            y: 16,
+            width: 56,
+            height: 56,
+            opacity: 0.7
+          },
+          '.rank': {
+            refX: 0.95,
+            refY: 0.5,
+            fontFamily: 'Courier New',
+            fontSize: 13,
+            textAnchor: 'end',
+            textVerticalAnchor: 'middle'
+          },
+          '.name': {
+            refX: 0.95,
+            refY: 0.7,
+            fontFamily: 'Arial',
+            fontSize: 14,
+            fontWeight: '600',
+            textAnchor: 'end'
+          },
+          '.btn.add': {
+            refDx: -16,
+            refY: 16,
+            event: 'node:add'
+          },
+          '.btn.del': {
+            refDx: -44,
+            refY: 16,
+            event: 'node:delete'
+          },
+          '.btn > circle': {
+            r: 10,
+            fill: 'transparent',
+            stroke: '#333',
+            strokeWidth: 1
+          },
+          '.btn.add > text': {
+            fontSize: 20,
+            fontWeight: 800,
+            stroke: '#000',
+            x: -5.5,
+            y: 7,
+            fontFamily: 'Times New Roman',
+            text: '+'
+          },
+          '.btn.del > text': {
+            fontSize: 28,
+            fontWeight: 500,
+            stroke: '#000',
+            x: -4.5,
+            y: 6,
+            fontFamily: 'Times New Roman',
+            text: '-'
+          }
+        }
+      },
+      true
+    )
+    // 自定义边
+    Graph.registerEdge(
+      'org-edge',
+      {
+        zIndex: -1,
+        attrs: {
+          line: {
+            stroke: '#A2B1C3',
+            strokeWidth: 2,
+            sourceMarker: null,
+            targetMarker: null
+          }
+        }
+      },
+      true
+    )
+
+    const male =
+      'https://gw.alipayobjects.com/mdn/rms_43231b/afts/img/A*kUy8SrEDp6YAAAAAAAAAAAAAARQnAQ'
+    const female =
+      'https://gw.alipayobjects.com/mdn/rms_43231b/afts/img/A*f6hhT75YjkIAAAAAAAAAAAAAARQnAQ'
+    // 布局方向
+    const dir = 'LR' // LR RL TB BT
+
+    // 监听自定义事件
+    function setup () {
+      graph.on('node:add', ({ e, node }) => {
+        e.stopPropagation()
+        const bg = Color.randomHex()
+        // const member = createNode(
+        //   'Employee',
+        //   'New Employee',
+        //   Math.random() < 0.5 ? male : female,
+        //   bg,
+        //   Color.invert(bg, true)
+        // )
+
+        console.log(e, node)
+        const member = createNode(
+          'Senior Vice President Controller',
+          'Steven P. Westly',
+          male,
+          bg,
+          Color.invert(bg, true),
+          'custom-vue',
+          {
+            val: '2'
+          }
+        )
+        graph.freeze()
+        graph.addCell([member, createEdge(node, member)])
+        layout()
+      })
+
+      graph.on('node:delete', ({ e, node }) => {
+        e.stopPropagation()
+        graph.freeze()
+        graph.removeCell(node)
+        layout()
+      })
+    }
+
+    // 自动布局
+    const layout = () => {
+      const nodes = graph.getNodes()
+      const edges = graph.getEdges()
+      const g = new dagre.graphlib.Graph()
+      g.setGraph({ rankdir: dir, nodesep: 16, ranksep: 16 })
+      g.setDefaultEdgeLabel(() => ({}))
+
+      const width = 260
+      const height = 90
+      nodes.forEach((node) => {
+        g.setNode(node.id, { width, height })
+      })
+
+      edges.forEach((edge) => {
+        const source = edge.getSource()
+        const target = edge.getTarget()
+        g.setEdge(source.cell, target.cell)
+      })
+
+      dagre.layout(g)
+
+      graph.freeze()
+
+      g.nodes().forEach((id) => {
+        const node = graph.getCell(id)
+        if (node) {
+          const pos = g.node(id)
+          node.position(pos.x, pos.y)
+        }
+      })
+
+      edges.forEach((edge) => {
+        const source = edge.getSourceNode()
+        const target = edge.getTargetNode()
+        const sourceBBox = source.getBBox()
+        const targetBBox = target.getBBox()
+
+        if ((dir === 'LR' || dir === 'RL') && sourceBBox.y !== targetBBox.y) {
+          const gap =
+            dir === 'LR'
+              ? targetBBox.x - sourceBBox.x - sourceBBox.width
+              : -sourceBBox.x + targetBBox.x + targetBBox.width
+          const fix = dir === 'LR' ? sourceBBox.width : 0
+          const x = sourceBBox.x + fix + gap / 2
+          edge.setVertices([
+            { x, y: sourceBBox.center.y },
+            { x, y: targetBBox.center.y }
+          ])
+        } else if (
+          (dir === 'TB' || dir === 'BT') &&
+          sourceBBox.x !== targetBBox.x
+        ) {
+          const gap =
+            dir === 'TB'
+              ? targetBBox.y - sourceBBox.y - sourceBBox.height
+              : -sourceBBox.y + targetBBox.y + targetBBox.height
+          const fix = dir === 'TB' ? sourceBBox.height : 0
+          const y = sourceBBox.y + fix + gap / 2
+          edge.setVertices([
+            { x: sourceBBox.center.x, y },
+            { x: targetBBox.center.x, y }
+          ])
+        } else {
+          edge.setVertices([])
+        }
+      })
+
+      graph.unfreeze()
+    }
+
+    const createNode = (rank, name, image, background, textColor = '#000', shape = 'org-node', data) => {
+      return graph.createNode({
+        shape: shape,
+        attrs: {
+          '.card': { fill: background },
+          '.image': { xlinkHref: image },
+          '.rank': {
+            fill: textColor,
+            text: Dom.breakText(rank, { width: 160, height: 45 })
+          },
+          '.name': {
+            fill: textColor,
+            text: Dom.breakText(name, { width: 160, height: 45 })
+          },
+          '.btn > circle': { stroke: textColor },
+          '.btn > text': { fill: textColor, stroke: textColor }
+        },
+        data
+      })
+    }
+
+    const createEdge = (source, target) => {
+      return graph.createEdge({
+        shape: 'org-edge',
+        source: { cell: source.id },
+        target: { cell: target.id }
+      })
+    }
+
+    const nodes = [
+      createNode('Founder & Chairman', 'Pierre Omidyar', male, '#31d0c6'),
+      createNode('President & CEO', 'Margaret C. Whitman', female, '#31d0c6'),
+      createNode('President, PayPal', 'Scott Thompson', male, '#7c68fc'),
+      createNode(
+        'President, Ebay Global Marketplaces',
+        'Devin Wenig',
+        male,
+        '#7c68fc'
+      ),
+      createNode(
+        'Senior Vice President Human Resources',
+        'Jeffrey S. Skoll',
+        male,
+        '#fe854f'
+      ),
+      createNode(
+        'Senior Vice President Controller',
+        'Steven P. Westly',
+        male,
+        '#feb663'
+      ),
+      createNode(
+        'Senior Vice President Controller',
+        'Steven P. Westly',
+        male,
+        '#feb663',
+        null,
+        'custom-vue',
+        {
+          val: '2'
+        }
+      )
+    ]
+
+    const edges = [
+      createEdge(nodes[0], nodes[1]),
+      createEdge(nodes[1], nodes[2]),
+      createEdge(nodes[1], nodes[3]),
+      createEdge(nodes[1], nodes[4]),
+      createEdge(nodes[1], nodes[5])
+    ]
+
+    graph.resetCells([...nodes, ...edges])
+    layout()
+    graph.zoomTo(0.8)
+    graph.centerContent()
+    setup()
 
     const r1 = graph.createNode({
       shape: 'custom-rect',
@@ -528,22 +956,7 @@ export default {
       label: '连接'
     })
 
-    const r7 = graph.createNode({
-      shape: 'polyline',
-      x: 320,
-      y: 180,
-      width: 80,
-      height: 80,
-      attrs: {
-        body: {
-          fill: 'none',
-          stroke: '#ffa940',
-          refPoints: '0,40 40,40 40,80 80,80 80,120 120,120 120,160'
-        }
-      }
-    })
-
-    stencil.load([r1, r2, r3, r4, r5, r6, r7], 'group1')
+    stencil.load([r1, r2, r3, r4, r5, r6], 'group1')
 
     const m1 = graph.createNode({
       shape: 'custom-image',
@@ -631,7 +1044,7 @@ export default {
     stencil.load([m1, m2, m3, m4, m5, m6], 'group2')
     // #endregion
 
-    graph.fromJSON(initData)
+    // graph.fromJSON(initData)
   },
   methods: {
     getGraphData () {
