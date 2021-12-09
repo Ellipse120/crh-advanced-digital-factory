@@ -2,7 +2,10 @@ import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-import { ArrayBuffer } from 'core-js/internals/array-buffer'
+
+const isJSONBlob = (response) => response?.data instanceof Blob
+const isJSONArrayBuffer = (response) => response?.data instanceof ArrayBuffer
+const isJSONResponseType = (response) => response?.headers?.['content-type'] === 'application/json'
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
@@ -23,10 +26,6 @@ service.interceptors.request.use(
     return Promise.reject(error)
   }
 )
-
-const isJSONBlob = (response) => response?.data instanceof Blob
-const isJSONArrayBuffer = (response) => response?.data instanceof ArrayBuffer
-const isJSONResponseType = (response) => response?.headers?.['content-type'] === 'application/json'
 
 // response interceptor
 service.interceptors.response.use(
@@ -98,5 +97,7 @@ service.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+
+console.log(service.interceptors.request)
 
 export default service

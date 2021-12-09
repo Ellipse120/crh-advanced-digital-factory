@@ -1,4 +1,6 @@
 export default {
+  attributify: true,
+
   theme: {
     backgroundColor: theme => ({
       ...theme('colors'),

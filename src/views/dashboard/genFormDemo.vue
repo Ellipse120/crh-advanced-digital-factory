@@ -1,9 +1,21 @@
 <template>
   <div>
+    <div class="border-l-100 border-red-500 ring-4 my-4">WindiCSS</div>
+
+    <button
+      bg="blue-400 hover:blue-500 dark:blue-500 dark:hover:blue-600"
+      text="sm white"
+      font="mono light"
+      p="y-2 x-4"
+      border="2 rounded blue-200"
+    >
+      Button
+    </button>
+
+    <el-divider />
+
     {{ model }}
     <el-form label-width="80px" :model="model">
-      <!--      <form-builder :form="form" :config="formConfig" :shares="formShares" :metadata="metadata" />-->
-      <!--      <el-button-wrapper class="mt-10" type="success">提交</el-button-wrapper>-->
 
       <el-row :gutter="12">
         <form-item v-for="(item, index) in forms" :key="index" :layout-config="item.layoutConfig || {}">
@@ -34,9 +46,6 @@
 <script>
 import Vue from 'vue'
 import { ref } from '@vue/composition-api'
-// import FormBuilder from '@/components/FormBuilder'
-import { useForm } from '@/components/FormBuilder/form'
-// import ElButtonWrapper from '@/components/ElButtonWrapper'
 import FormItem from '@/components/FormItem'
 import ElSelectWrapper from '@/components/ElSelectWrapper'
 import ElDatePickerWrapper from '@/components/ElDatePickerWrapper'
@@ -58,8 +67,6 @@ export default {
     ElCheckboxGroupWrapper,
     ElRadioGroupWrapper,
     ElInputWrapper
-    // ElButtonWrapper,
-    // FormBuilder
   },
   setup (props, context) {
     const model = ref({
@@ -182,17 +189,6 @@ export default {
       }
     ])
 
-    const form = useForm()
-    const { formValues, setInitialFormValues, updateFormValues } = form
-
-    formValues.value = {
-      channel: 2,
-      name: 'Form Builder',
-      comment: 'A powerful form builder',
-      actor: ['Yang', 'Zhang'],
-      description: 'What a nice tool'
-    }
-
     const formConfig = ref([
       {
         component: 'el-card',
@@ -290,13 +286,9 @@ export default {
       forms,
       testData,
 
-      form,
-      formValues,
       formConfig,
       formShares,
       metadata,
-      setInitialFormValues,
-      updateFormValues,
       test
     }
   }

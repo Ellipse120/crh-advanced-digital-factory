@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { Addon, Graph, Shape, Color, Dom } from '@antv/x6'
+import { Addon, Graph, Color, Dom } from '@antv/x6'
 import '@antv/x6-vue-shape'
 // import { DagreLayout } from '@antv/layout'
 import dagre from 'dagre'
