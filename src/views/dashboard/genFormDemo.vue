@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="border-l-100 border-red-500 ring-4 my-4">WindiCSS</div>
+    <div class="border-l-100 border-red-500 inline-block ring-4 my-4 transform duration-500 hover:rotate-90">WindiCSS</div>
 
     <button
       bg="blue-400 hover:blue-500 dark:blue-500 dark:hover:blue-600"
@@ -14,6 +14,12 @@
 
     <el-divider />
 
+    <h1
+      bg="pink-500 hover:pink-700"
+      text="white"
+      p="4"
+      m="y-2"
+    >动态生成表单</h1>
     {{ model }}
     <el-form label-width="80px" :model="model">
 
@@ -302,4 +308,17 @@ export default {
 .hover-row .el-input .el-input__inner{
   border-style:solid;
 }
+</style>
+
+<style scoped>
+
+@variants focus, hover {
+  .rotate-0 {
+    transform: rotate(0deg);
+  }
+  .rotate-90 {
+    transform: rotate(90deg);
+  }
+}
+
 </style>
