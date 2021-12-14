@@ -98,6 +98,4 @@ service.interceptors.response.use(
   }
 )
 
-console.log(service.interceptors.request)
-
 export default service

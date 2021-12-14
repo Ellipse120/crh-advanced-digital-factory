@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'xxx管理系统',
+  title: 'xx系统',
 
   subTitle: 'crh-advanced-digital-factory',
 
