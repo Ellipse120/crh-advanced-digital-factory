@@ -52,7 +52,10 @@ export default {
       return '请输入'
     },
     errorClass () {
-      return [this.hasError ? 'underline-red-500 transition animate-pulse' : 'underline-green-500']
+      return [
+        this.hasError ? 'underline-red-500 transition animate-pulse' : 'underline-green-500',
+        this.contentEditable ? 'cursor-text' : 'cursor-not-allowed'
+      ]
     }
   },
   watch: {
@@ -98,7 +101,7 @@ export default {
 
 <style scoped>
 .text-decoration {
-  @apply outline-none underline underline-0.3em underline-offset-2 text-shadow-lg cursor-text caret-pink-500 opacity-60;
+  @apply outline-none underline underline-0.3em underline-offset-2 text-shadow-lg caret-pink-500 opacity-60;
 }
 
 .text-decoration:empty::before {
