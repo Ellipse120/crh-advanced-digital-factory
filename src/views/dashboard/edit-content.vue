@@ -3,15 +3,17 @@
     :is="tag"
     ref="editorContent"
     class="text-decoration"
+    :class="errorClass"
     :placeholder="placeholder"
     :contenteditable="contentEditable"
     v-bind="$attrs"
     @input="handleInput"
+    @blur="handleBlur"
   />
 </template>
 
 <script>
-import debounce from 'lodash/debounce'
+// import debounce from 'lodash/debounce'
 
 export default {
   name: 'EditContent',
@@ -31,6 +33,15 @@ export default {
     contentEditable: {
       type: Boolean,
       default: true
+    },
+    validator: {
+      type: Function,
+      default: () => true
+    }
+  },
+  data () {
+    return {
+      hasError: false
     }
   },
   computed: {
@@ -38,10 +49,10 @@ export default {
       if (this.$refs && !this.$refs?.editorContent?.textContent) {
         return '不能为空'
       }
-      if (this.contentEditable) {
-        return '请输入'
-      }
-      return ''
+      return '请输入'
+    },
+    errorClass () {
+      return [this.hasError ? 'underline-red-500 transition animate-pulse' : 'underline-green-500']
     }
   },
   watch: {
@@ -61,9 +72,22 @@ export default {
       })
     },
 
-    handleInput: debounce(function (event) {
+    // handleInput: debounce(function (event) {
+    //   this.checkValid()
+    //   this.emitData(event.target.textContent)
+    // }, 400),
+    handleInput (event) {
+      this.checkValid()
       this.emitData(event.target.textContent)
-    }, 400),
+    },
+
+    handleBlur (e) {
+      this.checkValid()
+    },
+
+    checkValid () {
+      this.hasError = this.validator ? this.validator() : false
+    },
 
     emitData (v) {
       this.$emit('update', v)
@@ -74,7 +98,7 @@ export default {
 
 <style scoped>
 .text-decoration {
-  @apply outline-none underline decoration-wavy underline-0.3em underline-offset-2 underline-green-500 text-shadow-lg cursor-text p-2 caret-pink-500 opacity-60;
+  @apply outline-none underline underline-0.3em underline-offset-2 text-shadow-lg cursor-text caret-pink-500 opacity-60;
 }
 
 .text-decoration:empty::before {
