@@ -36,7 +36,7 @@ export default {
     },
     validator: {
       type: Function,
-      default: () => true
+      default: () => false
     }
   },
   data () {
@@ -46,7 +46,7 @@ export default {
   },
   computed: {
     placeholder () {
-      if (this.$refs && !this.$refs?.editorContent?.textContent) {
+      if (this.$refs && !this.$refs?.editorContent?.textContent && this.validator()) {
         return '不能为空'
       }
       return '请输入'
