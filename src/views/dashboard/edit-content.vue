@@ -101,7 +101,7 @@ export default {
 
 <style scoped>
 .text-decoration {
-  @apply inline-block outline-none underline underline-0.3em underline-offset-2 text-shadow-lg caret-pink-500 opacity-60;
+  @apply outline-none underline underline-0.3em underline-offset-2 text-shadow-lg caret-pink-500 opacity-60;
 }
 
 .text-decoration:empty::before {
