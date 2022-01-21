@@ -41,7 +41,8 @@ export default {
   },
   data () {
     return {
-      hasError: false
+      hasError: false,
+      val: null
     }
   },
   computed: {
@@ -61,7 +62,9 @@ export default {
   watch: {
     value: {
       handler: function (newVal) {
-        this.updateContent(newVal)
+        if (newVal !== this.val) {
+          this.updateContent(newVal)
+        }
       },
       immediate: true
     }
@@ -77,14 +80,17 @@ export default {
 
     // handleInput: debounce(function (event) {
     //   this.checkValid()
+    //   this.val = event.target.textContent
     //   this.emitData(event.target.textContent)
     // }, 400),
+
     handleInput (event) {
       this.checkValid()
+      this.val = event.target.textContent
       this.emitData(event.target.textContent)
     },
 
-    handleBlur (e) {
+    handleBlur () {
       this.checkValid()
     },
 
